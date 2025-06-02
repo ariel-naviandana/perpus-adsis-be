@@ -14,11 +14,6 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 // =================== ROUTE PROTECTED ===================
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    // ----------- USER BIASA -----------
-    Route::middleware([RoleMiddleware::class . ':siswa'])->group(function () {
-        Route::get('/books/{id}/download', [BookController::class, 'download']);
-    });
-
     // ----------- ADMIN & PETUGAS BISA AKSES SEMUA BOOKS CRUD KECUALI DOWNLOAD -----------
     Route::middleware([RoleMiddleware::class . ':admin-petugas-siswa'])->group(function () {
         Route::get('/books', [BookController::class, 'index']);

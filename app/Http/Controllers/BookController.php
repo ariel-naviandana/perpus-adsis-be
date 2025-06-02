@@ -28,15 +28,7 @@ class BookController extends Controller
             'file_path' => 'required'
         ]);
 
-        $book = Book::create([
-            'title' => $data['title'],
-            'author' => $data['author'],
-            'description' => $data['description'],
-            'category' => $data['category'],
-            'file_path' => $data['file_path']
-        ]);
-
-        return response()->json($book, 201);
+        return Book::create($data);
     }
 
     public function update(Request $request, $id)
