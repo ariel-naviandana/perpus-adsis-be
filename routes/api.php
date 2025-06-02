@@ -15,32 +15,26 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // ----------- USER BIASA -----------
-    Route::middleware([RoleMiddleware::class . ':user'])->group(function () {
-        Route::get('/books', [BookController::class, 'index']);
-        Route::get('/books/{id}', [BookController::class, 'show']);
+    Route::middleware([RoleMiddleware::class . ':siswa'])->group(function () {
         Route::get('/books/{id}/download', [BookController::class, 'download']);
     });
 
-    // ----------- PETUGAS -----------
-    Route::middleware([RoleMiddleware::class . ':petugas'])->group(function () {
+    // ----------- ADMIN & PETUGAS BISA AKSES SEMUA BOOKS CRUD KECUALI DOWNLOAD -----------
+    Route::middleware([RoleMiddleware::class . ':admin-petugas-siswa'])->group(function () {
         Route::get('/books', [BookController::class, 'index']);
-        Route::post('/books', [BookController::class, 'store']);
         Route::get('/books/{id}', [BookController::class, 'show']);
-        Route::put('/books/{id}', [BookController::class, 'update']);
-        Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
+        Route::middleware([RoleMiddleware::class . ':admin-petugas'])->group(function () {
+            Route::post('/books', [BookController::class, 'store']);
+            Route::put('/books/{id}', [BookController::class, 'update']);
+            Route::delete('/books/{id}', [BookController::class, 'destroy']);
+        });
     });
 
-    // ----------- ADMIN -----------
+    // ----------- ADMIN ONLY -----------
     Route::middleware([RoleMiddleware::class . ':admin'])->group(function () {
         // dashboard
         Route::get('/dashboard', [DashboardController::class, 'index']);
-
-        // manajemen buku
-        Route::get('/books', [BookController::class, 'index']);
-        Route::post('/books', [BookController::class, 'store']);
-        Route::get('/books/{id}', [BookController::class, 'show']);
-        Route::put('/books/{id}', [BookController::class, 'update']);
-        Route::delete('/books/{id}', [BookController::class, 'destroy']);
 
         // manajemen user
         Route::get('/users', [UserController::class, 'index']);
