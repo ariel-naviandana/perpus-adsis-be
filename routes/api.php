@@ -18,6 +18,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware([RoleMiddleware::class . ':admin-petugas-siswa'])->group(function () {
         Route::get('/books', [BookController::class, 'index']);
         Route::get('/books/{id}', [BookController::class, 'show']);
+        Route::get('/books/download/{id}', [BookController::class, 'download']);
 
         Route::middleware([RoleMiddleware::class . ':admin-petugas'])->group(function () {
             Route::post('/books', [BookController::class, 'store']);
