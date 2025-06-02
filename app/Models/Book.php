@@ -13,9 +13,4 @@ class Book extends Model
         'category',
         'file_path',
     ];
-
-    public function downloads()
-    {
-        return $this->hasMany(BookDownload::class);
-    }
 }

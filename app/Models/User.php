@@ -47,9 +47,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function downloads()
-    {
-        return $this->hasMany(BookDownload::class);
-    }
 }

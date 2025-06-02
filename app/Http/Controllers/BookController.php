@@ -25,17 +25,15 @@ class BookController extends Controller
             'author' => 'required',
             'description' => 'nullable',
             'category' => 'required',
-            'file' => 'required|mimes:pdf'
+            'file_path' => 'required'
         ]);
-
-        $filePath = $request->file('file')->store('books', 'public');
 
         $book = Book::create([
             'title' => $data['title'],
             'author' => $data['author'],
             'description' => $data['description'],
             'category' => $data['category'],
-            'file_path' => $filePath,
+            'file_path' => $data['file_path']
         ]);
 
         return response()->json($book, 201);
@@ -45,13 +43,7 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
-        $data = $request->only(['title', 'author', 'description', 'category']);
-
-        if ($request->hasFile('file')) {
-            Storage::disk('public')->delete($book->file_path);
-            $filePath = $request->file('file')->store('books', 'public');
-            $data['file_path'] = $filePath;
-        }
+        $data = $request->only(['title', 'author', 'description', 'category', 'file_path']);
 
         $book->update($data);
 
@@ -61,16 +53,9 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Book::findOrFail($id);
-        Storage::disk('public')->delete($book->file_path);
         $book->delete();
 
         return response()->json(['message' => 'Book deleted']);
-    }
-
-    public function download($id)
-    {
-        $book = Book::findOrFail($id);
-        return response()->download(storage_path("app/public/{$book->file_path}"));
     }
 }
 

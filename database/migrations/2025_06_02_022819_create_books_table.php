@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('author');
             $table->text('description')->nullable();
-            $table->enum('category', ['Teknologi', 'Sastra', 'Sejarah', 'Matematika', 'Agama']); // Dropdown statis
+            $table->enum('category', ['Teknologi', 'Sastra', 'Sejarah', 'Matematika', 'Agama']);
             $table->string('file_path');
             $table->timestamps();
         });
